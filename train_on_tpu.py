@@ -33,6 +33,7 @@ tf.distribute.Strategy
 keras.backend.clear_session()
 
 tpu_cluster = tf.distribute.cluster_resolver.TPUClusterResolver(tpu=TPU_WORKER)
+tf.config.experimental_connect_to_cluster(tpu_cluster)
 tf.tpu.experimental.initialize_tpu_system(tpu_cluster)
 strategy = tf.distribute.experimental.TPUStrategy(tpu_cluster)
 
