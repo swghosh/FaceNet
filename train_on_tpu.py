@@ -32,9 +32,9 @@ tf.distribute.Strategy
 """
 keras.backend.clear_session()
 
-tpu_cluster = tf.contrib.cluster_resolver.TPUClusterResolver(tpu=TPU_WORKER)
-tf.contrib.distribute.initialize_tpu_system(tpu_cluster)
-strategy = tf.contrib.distribute.TPUStrategy(tpu_cluster)
+tpu_cluster = tf.distribute.cluster_resolver.TPUClusterResolver(tpu=TPU_WORKER)
+tf.tpu.experimental.initialize_tpu_system(tpu_cluster)
+strategy = tf.distribute.experimental.TPUStrategy(tpu_cluster)
 
 """
 Prepare the data pipeline
