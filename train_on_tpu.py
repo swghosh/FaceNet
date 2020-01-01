@@ -96,7 +96,7 @@ def save_plots():
     loss = train_history.history['loss']
     val_loss = train_history.history['val_loss']
 
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(10, 8))
 
     plt.plot(loss)
     plt.plot(val_loss)
