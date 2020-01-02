@@ -38,6 +38,7 @@ class Dataset:
         classl = tf.math.equal(self.class_labels, classl)
         classl = tf.cast(classl, tf.int32)
         classl = tf.argmax(classl, axis=-1)
+        classl = tf.cast(classl, tf.int32)
 
         image = tf.image.decode_jpeg(image, channels=3)
         image = tf.image.resize_with_pad(image, self.image_size[0], self.image_size[1])
