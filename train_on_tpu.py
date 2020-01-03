@@ -32,8 +32,7 @@ argparser.add_argument('--tensorboard_path', type=str,
 import tensorflow as tf
 from tensorflow import keras
 
-from facenet import facenet
-from facenet import dataset
+from facenet import facenet, dataset
 
 def main(args):
     keras.backend.clear_session()
@@ -47,7 +46,7 @@ def main(args):
 
     train, val = dataset.get_train_val_dataset(args.class_labels, args.dataset_path, 
         image_height_width, args.batch_size)
-    dataset.SHUFFLE_BUFFER = args.num_train_samples
+    dataset.shuffle_buffer = args.num_train_samples
     
     lr_scheduler = keras.callbacks.LearningRateScheduler(
         schedule=lambda epoch: args.learning_rate * (0.1 ** (epoch // 100)), verbose=1)
