@@ -1,8 +1,6 @@
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
 
-from tensorflow.keras.regularizers import l2
-
 from tensorflow.keras import backend as K
 
 from .layers import *
@@ -12,8 +10,8 @@ from tensorflow_addons.losses import TripletSemiHardLoss
 
 from functools import partial
 
-conv = partial(Conv2D, padding='same', activation='relu', kernel_regularizer=l2(0.0002))
-dense = partial(Dense, activation='relu', kernel_regularizer=l2(0.0002))
+conv = partial(Conv2D, padding='same', activation='relu')
+dense = partial(Dense, activation='linear')
 
 max_pooling = partial(MaxPooling2D, padding='same')
 l2_pooling = partial(L2Pooling, padding='same')
