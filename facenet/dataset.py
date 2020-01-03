@@ -25,12 +25,7 @@ class Dataset:
         self.dataset_path, self.image_size, self.batch_size, self.shuffle = [value for value in (dataset_path, image_size, batch_size, shuffle)] # use shuffle only with train, not with val
         
         self.class_labels = Dataset.get_class_labels(cl_path)
-
-        # the number of classes present should 
-        # be evaluated well in advance :(
-        # if you run into some errors,
-        # consider commenting the with block
-        # and setting num_classes manually externally
+        
         self.num_classes = tf.shape(self.class_labels)[0]
         self.data = self.get_dataset()
 
