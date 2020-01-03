@@ -5,7 +5,7 @@ import argparse
 argparser = argparse.ArgumentParser(description='Train the FaceNet model on TPU')
 
 argparser.add_argument('--tpu_worker', type=str, 
-    help='GRPC connection string for TPU', default='grpc://10.0.0.2:8470')
+    help='gRPC connection string for TPU', default='grpc://10.0.0.2:8470')
 argparser.add_argument('--batch_size', type=int, 
     help='Batch size for training and validation pipeline', default=8192)
 argparser.add_argument('--learning_rate', type=float,
@@ -43,10 +43,14 @@ def main(args):
     tf.tpu.experimental.initialize_tpu_system(tpu_cluster)
     strategy = tf.distribute.experimental.TPUStrategy(tpu_cluster)
     
-    train, val = dataset.get_train_val_dataset(args.class_labels, args.dataset_path, (args.image_size, args.image_size), args.batch_size)
+    image_height_width = (args.image_size, args.image_size)
+
+    train, val = dataset.get_train_val_dataset(args.class_labels, args.dataset_path, 
+        image_height_width, args.batch_size)
     dataset.SHUFFLE_BUFFER = args.num_train_samples
     
-    lr_scheduler = keras.callbacks.LearningRateScheduler(schedule=lambda epoch: args.learning_rate * (0.1 ** (epoch // 100)), verbose=1)
+    lr_scheduler = keras.callbacks.LearningRateScheduler(
+        schedule=lambda epoch: args.learning_rate * (0.1 ** (epoch // 100)), verbose=1)
     tensorboard = keras.callbacks.TensorBoard(args.tensorboard_path)
     checkpoints = keras.callbacks.ModelCheckpoint('weights.{epoch:02d}_{val_loss:.4f}.hdf5',
         monitor='val_loss', save_weights_only=True)
@@ -54,11 +58,14 @@ def main(args):
     cbs = [lr_scheduler, checkpoints, tensorboard]
     
     with strategy.scope():
-        model = facenet.create_facenet_nn2((args.image_size, args.image_size), args.channels, args.alpha, args.learning_rate)
-        
-    model.fit(train.data, steps_per_epoch=args.num_train_samples // args.batch_size + 1,
-        validation_data=val.data, validation_steps=args.num_val_samples // args.batch_size + 1,
-        callbacks=cbs, epochs=args.epochs)
+        model = facenet.create_facenet_nn2(image_height_width, args.channels, 
+            args.alpha, args.learning_rate)
+    
+    train_steps = args.num_train_samples // args.batch_size
+    val_steps = args.num_val_samples // args.batch_size
+
+    model.fit(train.data, steps_per_epoch=train_steps, validation_data=val.data, 
+        validation_steps=val_steps, callbacks=cbs, epochs=args.epochs)
     model.save('facenet.h5')
 
 if __name__ == '__main__':
