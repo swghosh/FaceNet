@@ -66,7 +66,7 @@ class Dataset:
         ds = ds.interleave(tf.data.TFRecordDataset, cycle_length=cycle_length, num_parallel_calls=tf.data.experimental.AUTOTUNE)
         ds = ds.map(self.read_tfrec, tf.data.experimental.AUTOTUNE)
         if self.shuffle:
-            ds = ds.shuffle(SHUFFLE_BUFFER)
+            ds = ds.shuffle(shuffle_buffer)
         ds = ds.repeat()
         ds = ds.batch(self.batch_size, drop_remainder=True)
         return ds.prefetch(tf.data.experimental.AUTOTUNE)
