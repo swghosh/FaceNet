@@ -16,7 +16,7 @@ argparser.add_argument('--channels', type=int,
     help='Number of image channels (RGB = 3, Grayscale = 1)', default=3)
 argparser.add_argument('--alpha', type=float,
     help='Triplet loss margin', default=0.2)
-argparser.add_argument('--epochs', type=float,
+argparser.add_argument('--epochs', type=int,
     help='Number of training epochs', default=275)
 argparser.add_argument('--class_labels', type=str,
     help='Path to file containing list of all class labels', default='gs://bucket-name/C-MS-Celeb-class-labels.txt')
