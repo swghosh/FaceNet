@@ -58,7 +58,7 @@ def inception_module_partial(input_tensor, filters, strides=(1, 2, 1, 2), name='
     return conc
 
 def create_facenet_nn2(image_size, channels, alpha, lr):
-    inp = Input((image_size, image_size, channels), name='input')
+    inp = Input((*image_size, channels), name='input')
 
     out = conv(64, (7, 7), 2, name='conv1')(inp)
     out = max_pooling((3, 3), 2, name='pool1')(out)
