@@ -11,7 +11,7 @@ argparser.add_argument('--batch_size', type=int,
 argparser.add_argument('--learning_rate', type=float,
     help='Learning rate for model optimizer', default=0.05)
 argparser.add_argument('--image_size', type=int,
-    help='Size of W, H dimensions of image', default=8192)
+    help='Size of W, H dimensions of image', default=224)
 argparser.add_argument('--channels', type=int,
     help='Number of image channels (RGB = 3, Grayscale = 1)', default=3)
 argparser.add_argument('--alpha', type=float,
