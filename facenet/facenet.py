@@ -6,7 +6,9 @@ from tensorflow.keras import backend as K
 from .layers import *
 
 from tensorflow.keras.optimizers import Adagrad
-from tensorflow_addons.losses import TripletSemiHardLoss
+# from tensorflow_addons.losses import TripletSemiHardLoss
+
+from .triplet import *
 
 from functools import partial
 
@@ -56,7 +58,7 @@ def inception_module_partial(input_tensor, filters, strides=(1, 2, 1, 2), name='
     return conc
 
 def create_facenet_nn2(image_size, channels, alpha, lr):
-    inp = Input((*image_size, channels), name='input')
+    inp = Input((image_size, image_size, channels), name='input')
 
     out = conv(64, (7, 7), 2, name='conv1')(inp)
     out = max_pooling((3, 3), 2, name='pool1')(out)
@@ -89,7 +91,7 @@ def create_facenet_nn2(image_size, channels, alpha, lr):
     facenet = Model(inp, out, name='FaceNet_NN2')
     facenet.summary()
 
-    triplet_loss = TripletSemiHardLoss(alpha)
+    triplet_loss = partial(batch_hard_triplet_loss, margin=alpha)
     sgd_opt = Adagrad(lr)
     facenet.compile(sgd_opt, triplet_loss)
 

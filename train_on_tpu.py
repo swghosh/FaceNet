@@ -7,7 +7,7 @@ argparser = argparse.ArgumentParser(description='Train the FaceNet model on TPU'
 argparser.add_argument('--tpu_worker', type=str, 
     help='gRPC connection string for TPU', default='grpc://10.0.0.2:8470')
 argparser.add_argument('--batch_size', type=int, 
-    help='Batch size for training and validation pipeline', default=8192)
+    help='Batch size for training and validation pipeline', default=4096)
 argparser.add_argument('--learning_rate', type=float,
     help='Learning rate for model optimizer', default=0.05)
 argparser.add_argument('--image_size', type=int,
