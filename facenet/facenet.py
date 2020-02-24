@@ -6,9 +6,7 @@ from tensorflow.keras import backend as K
 from .layers import *
 
 from tensorflow.keras.optimizers import Adagrad
-# from tensorflow_addons.losses import TripletSemiHardLoss
-
-from .triplet import *
+from tensorflow_addons.losses import TripletSemiHardLoss
 
 from functools import partial
 
@@ -91,7 +89,7 @@ def create_facenet_nn2(image_size, channels, alpha, lr):
     facenet = Model(inp, out, name='FaceNet_NN2')
     facenet.summary()
 
-    triplet_loss = partial(batch_hard_triplet_loss, margin=alpha)
+    triplet_loss = TripletSemiHardLoss(alpha)
     sgd_opt = Adagrad(lr)
     facenet.compile(sgd_opt, triplet_loss)
 
